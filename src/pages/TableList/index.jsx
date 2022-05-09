@@ -10,7 +10,6 @@ import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
 /**
  * @en-US Add node
- * @zh-CN 添加节点
  * @param fields
  */
 
@@ -30,7 +29,6 @@ const handleAdd = async (fields) => {
 };
 /**
  * @en-US Update node
- * @zh-CN 更新节点
  *
  * @param fields
  */
@@ -55,7 +53,6 @@ const handleUpdate = async (fields) => {
 };
 /**
  *  Delete node
- * @zh-CN 删除节点
  *
  * @param selectedRows
  */
@@ -81,12 +78,10 @@ const handleRemove = async (selectedRows) => {
 const TableList = () => {
   /**
    * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
    *  */
   const [createModalVisible, handleModalVisible] = useState(false);
   /**
    * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
    * */
 
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
@@ -96,7 +91,6 @@ const TableList = () => {
   const [selectedRowsState, setSelectedRows] = useState([]);
   /**
    * @en-US International configuration
-   * @zh-CN 国际化配置
    * */
 
   const intl = useIntl();

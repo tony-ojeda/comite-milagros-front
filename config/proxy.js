@@ -1,5 +1,5 @@
 /**
- * 在生产环境 代理是无法生效的，所以这里没有生产环境的配置
+ * En el entorno de producción, el proxy no puede surtir efecto, por lo que no hay configuración para el entorno de producción.
  * -------------------------------
  * The agent cannot take effect in the production environment
  * so there is no configuration of the production environment
@@ -10,9 +10,8 @@ export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/api/': {
-      // 要代理的地址
+      // addres proxy
       target: 'https://preview.pro.ant.design',
-      // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
     },

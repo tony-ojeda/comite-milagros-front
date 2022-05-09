@@ -126,6 +126,7 @@ export default {
         currentAuthority: 'admin',
       });
       access = 'admin';
+      console.log('admin true')
       return;
     }
 
