@@ -48,11 +48,10 @@ const Login = () => {
       if (msg.status === 'ok') {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
-          defaultMessage: '登录成功！',
+          defaultMessage: 'Ingresando！',
         });
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
-        /** 此方法会跳转到 redirect 参数所在的位置 */
 
         if (!history) return;
         const { query } = history.location;
@@ -67,7 +66,7 @@ const Login = () => {
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
+        defaultMessage: 'Ups!!! Error',
       });
       message.error(defaultLoginFailureMessage);
     }
@@ -81,29 +80,29 @@ const Login = () => {
       </div>
       <div className={styles.content}>
         <LoginForm
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({
-            id: 'pages.layouts.userLayout.title',
-          })}
+          logo={<img alt="logo" src="/img/company/logo.svg" />}
+          title=""
+          subTitle=""
           initialValues={{
             autoLogin: true,
           }}
           actions={[
+            /*{
             <FormattedMessage
               key="loginWith"
               id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
+              defaultMessage="login"
             />,
             <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
             <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
             <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
+              }*/
           ]}
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
         >
-          <Tabs activeKey={type} onChange={setType}>
+              {/*<Tabs activeKey={type} onChange={setType}>
             <Tabs.TabPane
               key="account"
               tab={intl.formatMessage({
@@ -118,7 +117,7 @@ const Login = () => {
                 defaultMessage: '手机号登录',
               })}
             />
-          </Tabs>
+          </Tabs>*/}
 
           {status === 'error' && loginType === 'account' && (
             <LoginMessage
@@ -177,7 +176,8 @@ const Login = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {/*
+          {status === 'error' && loginType === 'mobile' && <LoginMessage content="Error mobile" />}
           {type === 'mobile' && (
             <>
               <ProFormText
@@ -262,20 +262,22 @@ const Login = () => {
               />
             </>
           )}
+
+          */}
           <div
             style={{
               marginBottom: 24,
             }}
           >
             <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+              <FormattedMessage id="pages.login.rememberMe" defaultMessage="text" />
             </ProFormCheckbox>
             <a
               style={{
                 float: 'right',
               }}
             >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="text" />
             </a>
           </div>
         </LoginForm>

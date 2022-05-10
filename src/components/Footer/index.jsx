@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <DefaultFooter
       copyright={`${currentYear} ${defaultMessage}`}
-      links={[
+    links={[/*
         {
           key: 'Ant Design Pro',
           title: 'Ant Design Pro',
@@ -31,7 +31,7 @@ const Footer = () => {
           href: 'https://ant.design',
           blankTarget: true,
         },
-      ]}
+      */]}
     />
   );
 };
