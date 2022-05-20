@@ -67,10 +67,11 @@ const NoticeIconView = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const [notices, setNotices] = useState([]);
-  const { data } = useRequest(getNotices);
+  // const { data } = useRequest(getNotices);
+  const data = [];
   useEffect(() => {
     setNotices(data || []);
-  }, [data]);
+  }, []);
   const noticeData = getNoticeData(notices);
   const unreadMsg = getUnreadData(noticeData || {});
 

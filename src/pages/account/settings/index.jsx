@@ -10,10 +10,10 @@ const { Item } = Menu;
 
 const Settings = () => {
   const menuMap = {
-    base: '基本设置',
-    security: '安全设置',
-    binding: '账号绑定',
-    notification: '新消息通知',
+    base: 'Basic Settings',
+    security: 'Security Settings',
+    binding: 'Cccount Binding',
+    notification: 'New Message Notification',
   };
   const [initConfig, setInitConfig] = useState({
     mode: 'inline',
@@ -53,31 +53,6 @@ const Settings = () => {
     };
   }, [dom.current]);
 
-  const getMenu = () => {
-    return Object.keys(menuMap).map((item) => <Item key={item}>{menuMap[item]}</Item>);
-  };
-
-  const renderChildren = () => {
-    const { selectKey } = initConfig;
-
-    switch (selectKey) {
-      case 'base':
-        return <BaseView />;
-
-      case 'security':
-        return <SecurityView />;
-
-      case 'binding':
-        return <BindingView />;
-
-      case 'notification':
-        return <NotificationView />;
-
-      default:
-        return null;
-    }
-  };
-
   return (
     <GridContent>
       <div
@@ -88,20 +63,9 @@ const Settings = () => {
           }
         }}
       >
-        <div className={styles.leftMenu}>
-          <Menu
-            mode={initConfig.mode}
-            selectedKeys={[initConfig.selectKey]}
-            onClick={({ key }) => {
-              setInitConfig({ ...initConfig, selectKey: key });
-            }}
-          >
-            {getMenu()}
-          </Menu>
-        </div>
         <div className={styles.right}>
           <div className={styles.title}>{menuMap[initConfig.selectKey]}</div>
-          {renderChildren()}
+            <BaseView />
         </div>
       </div>
     </GridContent>

@@ -7,9 +7,6 @@ import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import { outLogin } from '@/services/ant-design-pro/api';
 
-/**
- * 退出登录，并且将当前的 url 保存
- */
 const loginOut = async () => {
   await outLogin();
   const { query = {}, search, pathname } = history.location;
@@ -65,23 +62,23 @@ const AvatarDropdown = ({ menu }) => {
 
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
+      {/**menu && (
         <Menu.Item key="center">
           <UserOutlined />
-          个人中心
+          Personal Center
         </Menu.Item>
-      )}
+      )**/}
       {menu && (
         <Menu.Item key="settings">
           <SettingOutlined />
-          个人设置
+          Personal Settings
         </Menu.Item>
       )}
       {menu && <Menu.Divider />}
 
       <Menu.Item key="logout">
         <LogoutOutlined />
-        退出登录
+        Logout
       </Menu.Item>
     </Menu>
   );

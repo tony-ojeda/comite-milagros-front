@@ -7,6 +7,8 @@ export default {
   'pages.login.success': 'Login successful!',
   'pages.login.username.placeholder': 'Username: admin or user',
   'pages.login.username.required': 'Please input your username!',
+  'pages.login.email.placeholder': 'email',
+  'pages.login.email.required': 'Please input your email!',
   'pages.login.password.placeholder': 'Password: ant.design',
   'pages.login.password.required': 'Please input your password!',
   'pages.login.phoneLogin.tab': 'Phone Login',

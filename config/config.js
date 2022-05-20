@@ -30,6 +30,9 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
+  define: {
+    REACT_APP_API_URL: 'http://localhost:3001',
+  },
   // umi routes: https://umijs.org/docs/routing
   routes: [
     {
@@ -83,47 +86,37 @@ export default defineConfig({
         },
       ],
     },
-    // {
-    //   name: 'Gestión',
-    //   icon: 'user',
-    //   path: '/account',
-    //   routes: [
-    //     {
-    //       name: 'center',
-    //       icon: 'smile',
-    //       path: '/account/center',
-    //       component: './account/center',
-    //     },
-    //     {
-    //       name: 'settings',
-    //       icon: 'smile',
-    //       path: '/account/settings',
-    //       component: './account/settings',
-    //     },
-    //   ],
-    // },
-    // {
-    //   name: 'Gestión',
-    //   icon: 'setting',
-    //   path: '/setting',
-    //   router: [
-    //     {
-    //       name: 'Usuario',
-    //       icon: 'user',
-    //       path: '/user'
-    //     },
-    //     {
-    //       name: 'Usuario',
-    //       icon: 'user',
-    //       path: '/user'
-    //     },
-    //     {
-    //       name: 'Usuario',
-    //       icon: 'user',
-    //       path: '/user'
-    //     },
-    //   ]
-    // },
+    {
+      name: 'setting',
+      icon: 'setting',
+      path: '/setting',
+      router: [
+        {
+          name: 'Transportis',
+          icon: 'user',
+          path: '/user'
+        },
+      ]
+    },
+    {
+      name: 'account',
+      icon: 'user',
+      path: '/account',
+      routes: [
+        // {
+        //   name: 'center',
+        //   icon: 'smile',
+        //   path: '/account/center',
+        //   component: './account/center',
+        // },
+        {
+          name: 'settings',
+          icon: 'smile',
+          path: '/account/settings',
+          component: './account/settings',
+        },
+      ],
+    },
     {
       path: '/',
       redirect: '/dashboard/analysis',
@@ -145,19 +138,19 @@ export default defineConfig({
   },
   // Fast Refresh
   fastRefresh: {},
-  openAPI: [
-    {
-      requestLibPath: "import { request } from 'umi'",
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-      schemaPath: join(__dirname, 'oneapi.json'),
-      mock: false,
-    },
-    {
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
-    },
-  ],
+  // openAPI: [
+  //   {
+  //     requestLibPath: "import { request } from 'umi'",
+  //     // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
+  //     schemaPath: join(__dirname, 'oneapi.json'),
+  //     mock: false,
+  //   },
+  //   {
+  //     requestLibPath: "import { request } from 'umi'",
+  //     schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
+  //     projectName: 'swagger',
+  //   },
+  // ],
   nodeModulesTransform: {
     type: 'none',
   },

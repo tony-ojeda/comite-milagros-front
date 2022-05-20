@@ -12,10 +12,12 @@ import { ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm } from '@ant-de
 import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
+import Repository from '@/repositories/factory/RepositoryFactory';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import styles from './index.less';
 
 const LoginMessage = ({ content }) => (
+
   <Alert
     style={{
       marginBottom: 24,
@@ -27,6 +29,7 @@ const LoginMessage = ({ content }) => (
 );
 
 const Login = () => {
+  const AuthRepository = Repository.get('auth');
   const [userLoginState, setUserLoginState] = useState({});
   const [type, setType] = useState('account');
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -42,15 +45,16 @@ const Login = () => {
 
   const handleSubmit = async (values) => {
     try {
-      // 登录
-      const msg = await login({ ...values, type });
+      const msg = await AuthRepository.login({ ...values, type });
 
-      if (msg.status === 'ok') {
+      if (String(msg.status) === '200') {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: 'Ingresando！',
         });
         message.success(defaultLoginSuccessMessage);
+        const { token } = msg.data;
+        localStorage.setItem('user_token', token)
         await fetchUserInfo();
 
         if (!history) return;
@@ -59,16 +63,17 @@ const Login = () => {
         history.push(redirect || '/');
         return;
       }
-
-      console.log(msg); // 如果失败去设置用户错误信息
-
       setUserLoginState(msg);
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: 'Ups!!! Error',
-      });
-      message.error(defaultLoginFailureMessage);
+      if ('message' in error.response.data) {
+        message.error(error.response.data.message);
+      } else {
+        const defaultLoginFailureMessage = intl.formatMessage({
+          id: 'pages.login.failure',
+          defaultMessage: 'Ups!!! Error',
+        });
+        message.error(defaultLoginFailureMessage);
+      }
     }
   };
 
@@ -123,29 +128,29 @@ const Login = () => {
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
+                defaultMessage: 'default message',
               })}
             />
           )}
           {type === 'account' && (
             <>
               <ProFormText
-                name="username"
+                name="email"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
                 placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
+                  id: 'pages.login.email.placeholder',
+                  defaultMessage: 'Correo',
                 })}
                 rules={[
                   {
                     required: true,
                     message: (
                       <FormattedMessage
-                        id="pages.login.username.required"
-                        defaultMessage="请输入用户名!"
+                        id="pages.login.email.required"
+                        defaultMessage="Tiene que ingresar su correo!"
                       />
                     ),
                   },
