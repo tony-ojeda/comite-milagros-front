@@ -74,27 +74,49 @@ export default defineConfig({
       component: './dashboard/analysis',
     },
     {
-      path: '/form',
-      icon: 'form',
-      name: 'form',
-      routes: [
-        {
-          name: 'basic-form',
-          icon: 'smile',
-          path: '/form/basic-form',
-          component: './form/basic-form',
-        },
-      ],
+      path: '/go-out',
+      name: 'go-out',
+      icon: 'car',
+      path: '/got-out',
     },
     {
-      name: 'setting',
-      icon: 'setting',
-      path: '/setting',
-      router: [
+      path: '/payment-record',
+      name: 'payment-record',
+      icon: 'creditCard',
+      path: '/payment-record',
+    },
+    {
+      name: 'report',
+      icon: 'file',
+      path: '/report',
+      routes: [
         {
-          name: 'Transportis',
-          icon: 'user',
-          path: '/user'
+          name: 'debts',
+          path: '/report/debts',
+        },
+        {
+          name: 'incomes',
+          path: '/report/incomes',
+        },
+      ]
+    },
+    {
+      name: 'managment',
+      icon: 'setting',
+      path: '/managment',
+      routes: [
+        {
+          name: 'carriers',
+          path: '/managment/carriers',
+          component: './managment/carriers',
+        },
+        {
+          name: 'vehicles',
+          path: '/managment/vehicles',
+        },
+        {
+          name: 'services',
+          path: '/managment/services',
         },
       ]
     },

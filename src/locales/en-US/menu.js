@@ -49,4 +49,13 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+  'menu.managment': 'Managment',
+  'menu.managment.carriers': 'Carriers',
+  'menu.managment.vehicles': 'Vehicles',
+  'menu.managment.services': 'Services',
+  'menu.report': 'Reports',
+  'menu.report.debts': 'Debts',
+  'menu.report.incomes': 'Incomes',
+  'menu.go': 'Vehcle Exit',
+  'menu.payment-record': 'Payment Record',
 };

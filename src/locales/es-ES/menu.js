@@ -45,4 +45,13 @@ export default {
   'menu.account.settings': 'Configuraciones de Cuenta',
   'menu.account.trigger': 'Trigger Error',
   'menu.account.logout': 'Cerrar Sesión',
+  'menu.managment': 'Administración',
+  'menu.managment.carriers': 'Transportistas',
+  'menu.managment.vehicles': 'Vehiculos',
+  'menu.managment.services': 'Servicios',
+  'menu.report': 'Reportes',
+  'menu.report.debts': 'Pendientes',
+  'menu.report.incomes': 'Ingresos',
+  'menu.go-out': 'Salida',
+  'menu.payment-record': 'Pagos',
 };

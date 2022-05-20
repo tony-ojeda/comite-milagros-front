@@ -99,6 +99,9 @@ const BaseView = () => {
               layout="vertical"
               onFinish={handleFinish}
               submitter={{
+                submitButtonProps: {
+                  submitText: 'submit',
+                },
                 resetButtonProps: {
                   style: {
                     display: 'none',

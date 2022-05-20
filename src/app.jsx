@@ -20,7 +20,7 @@ export async function getInitialState() {
       const msg = await userRepository.currentUser();
       return msg.data;
     } catch (error) {
-      // history.push(loginPath);
+      history.push(loginPath);
     }
 
     return undefined;
@@ -53,21 +53,21 @@ export const layout = ({ initialState, setInitialState }) => {
       const { location } = history;
 
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        // history.push(loginPath);
+        history.push(loginPath);
       }
     },
-    links: isDev
-      ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs" key="docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
-      : [],
+    // links: isDev
+    //   ? [
+    //       <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+    //         <LinkOutlined />
+    //         <span>OpenAPI 文档</span>
+    //       </Link>,
+    //       <Link to="/~docs" key="docs">
+    //         <BookOutlined />
+    //         <span>业务组件文档</span>
+    //       </Link>,
+    //     ]
+    //   : [],
     menuHeaderRender: undefined,
     childrenRender: (children, props) => {
       // if (initialState?.loading) return <PageLoading />;

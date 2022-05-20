@@ -1,16 +1,16 @@
-import component from './en-US/component';
-import globalHeader from './en-US/globalHeader';
-import menu from './en-US/menu';
-import pages from './en-US/pages';
-import pwa from './en-US/pwa';
-import settingDrawer from './en-US/settingDrawer';
-import settings from './en-US/settings';
+import component from './es-ES/component';
+import globalHeader from './es-ES/globalHeader';
+import menu from './es-ES/menu';
+import pages from './es-ES/pages';
+import pwa from './es-ES/pwa';
+import settingDrawer from './es-ES/settingDrawer';
+import settings from './es-ES/settings';
 export default {
   'navBar.lang': 'Idiomas',
-  'layout.user.link.help': 'Help',
+  'layout.user.link.help': 'Ayuda',
   'layout.user.link.privacy': 'Condiciones',
   'layout.user.link.terms': 'Terminos',
-  'app.copyright.produced': 'Produced by Ant Financial Experience Department',
+  'app.copyright.produced': 'Producido por Tony Ojeda',
   'app.preview.down.block': 'Descarga esta página a tu proyecto loc',
   'app.welcome.link.fetch-blocks': 'Obtener todo el bloque',
   'app.welcome.link.block-list': 'Cree rápidamente páginas estándar basadas en el desarrollo de `bloques`',
