@@ -69,4 +69,6 @@ export default {
   'pages.searchTable.tenThousand': '0000',
   'pages.searchTable.batchDeletion': 'eliminación por lotes',
   'pages.searchTable.batchApproval': 'aprobación de lotes',
+  'pages.managment.carriers.title': 'Lista de Transportistas',
+  'pages.managment.carriers.actionCarrier': '{action} Transportista',
 };

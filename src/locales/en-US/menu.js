@@ -56,6 +56,6 @@ export default {
   'menu.report': 'Reports',
   'menu.report.debts': 'Debts',
   'menu.report.incomes': 'Incomes',
-  'menu.go': 'Vehcle Exit',
+  'menu.go-out': 'Vehicle Exit',
   'menu.payment-record': 'Payment Record',
 };
