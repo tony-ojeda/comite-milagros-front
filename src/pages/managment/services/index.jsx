@@ -9,7 +9,7 @@ import {
 import styles from './style.less';
 import Repository from '@/repositories/factory/RepositoryFactory';
 
-const Carriers = () => {
+const Services = () => {
   const [modalAction, setModalAction] = useState('');
   const initialState = {
     firstName: '',
@@ -17,16 +17,16 @@ const Carriers = () => {
     identityNumber: '',
     phone: '',
     email: '',
-    role: 'carrier',
+    role: 'service',
     haveUser: false
   }
-  const [carrier, setCarrier] = useState(initialState);
-  const [carriers, setCarriers] = useState([]);
-  const [showModalCarrier, setShowModalCarrier] = useState(false);
-  const [confirmModalCarrierLoading, setConfirmModalCarrierLoading] = React.useState(false);
+  const [service, setService] = useState(initialState);
+  const [services, setServices] = useState([]);
+  const [showModalService, setShowModalService] = useState(false);
+  const [confirmModalServiceLoading, setConfirmModalServiceLoading] = React.useState(false);
   const dom = useRef();
   const intl = useIntl();
-  const [formCarrier] = Form.useForm();
+  const [formService] = Form.useForm();
   const UserRepository = Repository.get('user');
 
   const columns = [
@@ -61,11 +61,11 @@ const Carriers = () => {
       render: (text, record, index) => (
         <Space size="middle">
           <Divider type="vertical" />
-          <EditFilled onClick={(e) => prepareEditCarrier(record) } style={{color: "#1d8efa", cursor: "pointer"}} />
+          <EditFilled onClick={(e) => prepareEditService(record) } style={{color: "#1d8efa", cursor: "pointer"}} />
           <Divider type="vertical" />
           <Popconfirm    
           title="Are you sure to delete this task?"
-          onConfirm={(e) => deleteCarrier(record)}
+          onConfirm={(e) => deleteService(record)}
           okText="Yes"
           cancelText="No"
           >
@@ -78,65 +78,65 @@ const Carriers = () => {
   ];
 
 
-  const prepareNewCarrier = () => {
-    setCarrier(initialState);
+  const prepareNewService = () => {
+    setService(initialState);
     setModalAction(intl.formatMessage({id: 'component.Button.new', defaultMessage: 'New'}));
-    setShowModalCarrier(true);
+    setShowModalService(true);
   };
 
-  const prepareEditCarrier = (carrier) => {
-    setCarrier(carrier);
+  const prepareEditService = (service) => {
+    setService(service);
     setModalAction(intl.formatMessage({id: 'component.Button.edit', defaultMessage: 'Edit'}));
-    setShowModalCarrier(true);
-    formCarrier.setFieldsValue(carrier)
+    setShowModalService(true);
+    formService.setFieldsValue(service)
   }
 
-  const deleteCarrier = async (carrier) => {
+  const deleteService = async (service) => {
     try {
-      await UserRepository.delete( carrier._id );
-      fetchCarriers();
+      await UserRepository.delete( service._id );
+      fetchServices();
     } catch(err) {
       console.error(err);
     }
   }
 
-  const saveCarrier = () => {
-    setConfirmModalCarrierLoading(true);
-    formCarrier
+  const saveService = () => {
+    setConfirmModalServiceLoading(true);
+    formService
       .validateFields()
       .then(async function(values) {
-        formCarrier.resetFields();
-        const newCarrier = { ...carrier, ...values };
-        setCarrier( newCarrier )
+        formService.resetFields();
+        const newService = { ...service, ...values };
+        setService( newService )
         try {
-          if ('_id' in newCarrier) await UserRepository.update( newCarrier );
-          else await UserRepository.store(newCarrier)
-          fetchCarriers();
+          if ('_id' in newService) await UserRepository.update( newService );
+          else await UserRepository.store(newService)
+          fetchServices();
         } catch(err) {
           console.error(err);
         }
-        setShowModalCarrier(false);
-        setConfirmModalCarrierLoading(false);
+        setShowModalService(false);
+        setConfirmModalServiceLoading(false);
       })
       .catch((info) => {
-        setConfirmModalCarrierLoading(false);
+        setConfirmModalServiceLoading(false);
         console.log('validade failed: ', info)
       })
   }
 
-  const fetchCarriers = async () => {
+  const fetchServices = async () => {
     try {
-      const filter = { role: "carrier" };
+      const filter = { role: "service" };
       // if ( roles == 'instructor') filter.userData = { user: idUser };
       const { data } = await UserRepository.get( filter );
-      setCarriers(data.users);
+      setServices(data.users);
     } catch (err) {
       console.error('Error get blogs: ', err);
     }
   };
 
   useEffect(() => {
-    fetchCarriers();
+    fetchServices();
     // if( roles == 'user') setIsEdit(false)
     // else setIsEdit(true)
   }, []);
@@ -155,31 +155,31 @@ const Carriers = () => {
           <div className={styles.right}>
             <div className={styles.head}>
               <div className={styles.title}>
-                {intl.formatMessage({id: "pages.managment.carriers.title", defaultMessage: 'Carriers'})}
+                {intl.formatMessage({id: "pages.managment.services.title", defaultMessage: 'Services'})}
               </div>
-              <Button size="small" type="primary" onClick={ prepareNewCarrier }>
+              <Button size="small" type="primary" onClick={ prepareNewService }>
                 {intl.formatMessage({id: "component.Button.new", defaultMessage: 'New'})}
               </Button>
             </div>
             <Divider />
-            <Table size="small" pagination={{position: ['bottomCenter']}} columns={columns} dataSource={carriers} rowKey={(carrier) => carrier._id} />
+            <Table size="small" pagination={{position: ['bottomCenter']}} columns={columns} dataSource={services} rowKey={(service) => service._id} />
           </div>
         </div>
       </GridContent>
       <Modal
-        title={intl.formatMessage({id: "pages.managment.carriers.action", defaultMessage: 'Carriers'}, { action: modalAction })}
-        visible={showModalCarrier}
-        onOk={saveCarrier}
-        confirmLoading={confirmModalCarrierLoading}
-        onCancel={() => setShowModalCarrier(false)}
+        title={intl.formatMessage({id: "pages.managment.services.action", defaultMessage: 'Services'}, { action: modalAction })}
+        visible={showModalService}
+        onOk={saveService}
+        confirmLoading={confirmModalServiceLoading}
+        onCancel={() => setShowModalService(false)}
       >
         <Form
-          form={formCarrier}
+          form={formService}
           layout="vertical"
-          name="formModalCarrier"
+          name="formModalService"
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          initialValues={carrier}
+          initialValues={service}
           autoComplete="off"
         >
 
@@ -244,4 +244,4 @@ const Carriers = () => {
   );
 }
 
-export default Carriers;
+export default Services;

@@ -9,7 +9,7 @@ import {
 import styles from './style.less';
 import Repository from '@/repositories/factory/RepositoryFactory';
 
-const Carriers = () => {
+const Vehicles = () => {
   const [modalAction, setModalAction] = useState('');
   const initialState = {
     firstName: '',
@@ -17,16 +17,16 @@ const Carriers = () => {
     identityNumber: '',
     phone: '',
     email: '',
-    role: 'carrier',
+    role: 'vehicle',
     haveUser: false
   }
-  const [carrier, setCarrier] = useState(initialState);
-  const [carriers, setCarriers] = useState([]);
-  const [showModalCarrier, setShowModalCarrier] = useState(false);
-  const [confirmModalCarrierLoading, setConfirmModalCarrierLoading] = React.useState(false);
+  const [vehicle, setVehicle] = useState(initialState);
+  const [vehicles, setVehicles] = useState([]);
+  const [showModalVehicle, setShowModalVehicle] = useState(false);
+  const [confirmModalVehicleLoading, setConfirmModalVehicleLoading] = React.useState(false);
   const dom = useRef();
   const intl = useIntl();
-  const [formCarrier] = Form.useForm();
+  const [formVehicle] = Form.useForm();
   const UserRepository = Repository.get('user');
 
   const columns = [
@@ -61,11 +61,11 @@ const Carriers = () => {
       render: (text, record, index) => (
         <Space size="middle">
           <Divider type="vertical" />
-          <EditFilled onClick={(e) => prepareEditCarrier(record) } style={{color: "#1d8efa", cursor: "pointer"}} />
+          <EditFilled onClick={(e) => prepareEditVehicle(record) } style={{color: "#1d8efa", cursor: "pointer"}} />
           <Divider type="vertical" />
           <Popconfirm    
           title="Are you sure to delete this task?"
-          onConfirm={(e) => deleteCarrier(record)}
+          onConfirm={(e) => deleteVehicle(record)}
           okText="Yes"
           cancelText="No"
           >
@@ -78,65 +78,65 @@ const Carriers = () => {
   ];
 
 
-  const prepareNewCarrier = () => {
-    setCarrier(initialState);
+  const prepareNewVehicle = () => {
+    setVehicle(initialState);
     setModalAction(intl.formatMessage({id: 'component.Button.new', defaultMessage: 'New'}));
-    setShowModalCarrier(true);
+    setShowModalVehicle(true);
   };
 
-  const prepareEditCarrier = (carrier) => {
-    setCarrier(carrier);
+  const prepareEditVehicle = (vehicle) => {
+    setVehicle(vehicle);
     setModalAction(intl.formatMessage({id: 'component.Button.edit', defaultMessage: 'Edit'}));
-    setShowModalCarrier(true);
-    formCarrier.setFieldsValue(carrier)
+    setShowModalVehicle(true);
+    formVehicle.setFieldsValue(vehicle)
   }
 
-  const deleteCarrier = async (carrier) => {
+  const deleteVehicle = async (vehicle) => {
     try {
-      await UserRepository.delete( carrier._id );
-      fetchCarriers();
+      await UserRepository.delete( vehicle._id );
+      fetchVehicles();
     } catch(err) {
       console.error(err);
     }
   }
 
-  const saveCarrier = () => {
-    setConfirmModalCarrierLoading(true);
-    formCarrier
+  const saveVehicle = () => {
+    setConfirmModalVehicleLoading(true);
+    formVehicle
       .validateFields()
       .then(async function(values) {
-        formCarrier.resetFields();
-        const newCarrier = { ...carrier, ...values };
-        setCarrier( newCarrier )
+        formVehicle.resetFields();
+        const newVehicle = { ...vehicle, ...values };
+        setVehicle( newVehicle )
         try {
-          if ('_id' in newCarrier) await UserRepository.update( newCarrier );
-          else await UserRepository.store(newCarrier)
-          fetchCarriers();
+          if ('_id' in newVehicle) await UserRepository.update( newVehicle );
+          else await UserRepository.store(newVehicle)
+          fetchVehicles();
         } catch(err) {
           console.error(err);
         }
-        setShowModalCarrier(false);
-        setConfirmModalCarrierLoading(false);
+        setShowModalVehicle(false);
+        setConfirmModalVehicleLoading(false);
       })
       .catch((info) => {
-        setConfirmModalCarrierLoading(false);
+        setConfirmModalVehicleLoading(false);
         console.log('validade failed: ', info)
       })
   }
 
-  const fetchCarriers = async () => {
+  const fetchVehicles = async () => {
     try {
-      const filter = { role: "carrier" };
+      const filter = { role: "vehicle" };
       // if ( roles == 'instructor') filter.userData = { user: idUser };
       const { data } = await UserRepository.get( filter );
-      setCarriers(data.users);
+      setVehicles(data.users);
     } catch (err) {
       console.error('Error get blogs: ', err);
     }
   };
 
   useEffect(() => {
-    fetchCarriers();
+    fetchVehicles();
     // if( roles == 'user') setIsEdit(false)
     // else setIsEdit(true)
   }, []);
@@ -155,31 +155,31 @@ const Carriers = () => {
           <div className={styles.right}>
             <div className={styles.head}>
               <div className={styles.title}>
-                {intl.formatMessage({id: "pages.managment.carriers.title", defaultMessage: 'Carriers'})}
+                {intl.formatMessage({id: "pages.managment.vehicles.title", defaultMessage: 'Vehicles'})}
               </div>
-              <Button size="small" type="primary" onClick={ prepareNewCarrier }>
+              <Button size="small" type="primary" onClick={ prepareNewVehicle }>
                 {intl.formatMessage({id: "component.Button.new", defaultMessage: 'New'})}
               </Button>
             </div>
             <Divider />
-            <Table size="small" pagination={{position: ['bottomCenter']}} columns={columns} dataSource={carriers} rowKey={(carrier) => carrier._id} />
+            <Table size="small" pagination={{position: ['bottomCenter']}} columns={columns} dataSource={vehicles} rowKey={(vehicle) => vehicle._id} />
           </div>
         </div>
       </GridContent>
       <Modal
-        title={intl.formatMessage({id: "pages.managment.carriers.action", defaultMessage: 'Carriers'}, { action: modalAction })}
-        visible={showModalCarrier}
-        onOk={saveCarrier}
-        confirmLoading={confirmModalCarrierLoading}
-        onCancel={() => setShowModalCarrier(false)}
+        title={intl.formatMessage({id: "pages.managment.vehicles.action", defaultMessage: 'Vehicles'}, { action: modalAction })}
+        visible={showModalVehicle}
+        onOk={saveVehicle}
+        confirmLoading={confirmModalVehicleLoading}
+        onCancel={() => setShowModalVehicle(false)}
       >
         <Form
-          form={formCarrier}
+          form={formVehicle}
           layout="vertical"
-          name="formModalCarrier"
+          name="formModalVehicle"
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          initialValues={carrier}
+          initialValues={vehicle}
           autoComplete="off"
         >
 
@@ -244,4 +244,4 @@ const Carriers = () => {
   );
 }
 
-export default Carriers;
+export default Vehicles;

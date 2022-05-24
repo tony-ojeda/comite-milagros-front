@@ -70,5 +70,11 @@ export default {
   'pages.searchTable.batchDeletion': 'bacth deletion',
   'pages.searchTable.batchApproval': 'batch approval',
   'pages.managment.carriers.title': 'List of carriers',
-  'pages.managment.carriers.actionCarrier': '{action} Carrier',
+  'pages.managment.carriers.action': '{action} Carrier',
+  'pages.managment.vehicles.title': 'List of vehicles',
+  'pages.managment.vehicles.action': '{action} Vehicles',
+  'pages.managment.services.title': 'List of services',
+  'pages.managment.services.action': '{action} Services',
+  'pages.vehicleExit.title': 'List of vehicle exit',
+  'pages.vehicleExit.action': '{action} vehicle exit',
 };

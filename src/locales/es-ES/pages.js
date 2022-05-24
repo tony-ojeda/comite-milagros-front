@@ -71,4 +71,10 @@ export default {
   'pages.searchTable.batchApproval': 'aprobación de lotes',
   'pages.managment.carriers.title': 'Lista de Transportistas',
   'pages.managment.carriers.actionCarrier': '{action} Transportista',
+  'pages.managment.vehicles.title': 'Lista de Vehiculos',
+  'pages.managment.vehicles.action': '{action} Vehiculo',
+  'pages.managment.services.title': 'Lista de Servicios',
+  'pages.managment.services.action': '{action} Servicio',
+  'pages.managment.vehicleExit.title': 'Lista Salida de Vehiculos',
+  'pages.managment.vehicleExit.action': '{action} salida de vehiculo',
 };

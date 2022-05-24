@@ -3,6 +3,8 @@ export default {
   'component.tagSelect.collapse': 'Collapse',
   'component.tagSelect.all': 'All',
   'component.Button.new': 'New',
+  'component.Button.exitRegister': 'Exit Register',
+  'component.Button.register': 'Register',
   'component.Button.edit': 'Edit',
   'component.Button.delete': 'Delete',
 };

@@ -78,6 +78,7 @@ export default defineConfig({
       name: 'go-out',
       icon: 'car',
       path: '/got-out',
+      component: './vehicleExit',
     },
     {
       path: '/payment-record',
@@ -113,10 +114,12 @@ export default defineConfig({
         {
           name: 'vehicles',
           path: '/managment/vehicles',
+          component: './managment/vehicles',
         },
         {
           name: 'services',
           path: '/managment/services',
+          component: './managment/services',
         },
       ]
     },
