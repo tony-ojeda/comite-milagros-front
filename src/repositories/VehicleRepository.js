@@ -11,7 +11,7 @@ const api = {
     return backend.post(`vehicles`, payload);
   },
   update(payload) {
-    return backend.put(`vehicles/${payload.id}`, payload);
+    return backend.put(`vehicles/${payload._id}`, payload);
   },
   delete(id) {
     return backend.delete(`vehicles/${id}`);

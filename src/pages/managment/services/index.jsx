@@ -184,59 +184,26 @@ const Services = () => {
         >
 
           <Row>
-            <Col span={11}>
+            <Col span={19}>
               <Form.Item
-                label="Name"
-                name="firstName"
-                rules={[{ required: true, message: 'Please input your name!' }]}
+                label="Service name"
+                name="address"
+                rules={[{ required: true, message: 'Please input your service name!' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={12} offset={1} >
+            <Col span={4} offset={1} >
               <Form.Item
-                label="Last Name"
-                name="lastName"
-                rules={[{ required: true, message: 'Please input your lastname' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col span={11}>
-              <Form.Item
-                label="DNI"
-                name="identityNumber"
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12} offset={1} >
-              <Form.Item
-                label="Phone"
-                name="phone"
-                rules={[{ required: true, message: 'Please input your phone' }]}
+                label="Amount"
+                name="amount"
+                rules={[{ required: true, message: 'Please input your amount!' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item
-            label="Address"
-            name="address"
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Email"
-            name="email"
-          >
-            <Input />
-          </Form.Item>
 
         </Form>
       </Modal>

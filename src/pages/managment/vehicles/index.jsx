@@ -1,10 +1,11 @@
 import React, {  useEffect, useState, useRef, useLayoutEffect } from 'react';
-import { useIntl } from 'umi';
+import { useIntl, useRequest } from 'umi';
 import { GridContent } from '@ant-design/pro-layout';
-import { Popconfirm, Table, Tag, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
+import { message, Avatar, Upload, Popconfirm, Table, Tag, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
 import {
   EditFilled, 
   DeleteFilled,
+  UploadOutlined,
 } from '@ant-design/icons';
 import styles from './style.less';
 import Repository from '@/repositories/factory/RepositoryFactory';
@@ -12,47 +13,52 @@ import Repository from '@/repositories/factory/RepositoryFactory';
 const Vehicles = () => {
   const [modalAction, setModalAction] = useState('');
   const initialState = {
-    firstName: '',
-    lastName: '',
+    licensePlate: '',
+    aliasName: '',
     identityNumber: '',
-    phone: '',
-    email: '',
-    role: 'vehicle',
-    haveUser: false
+    mark: '',
+    model: '',
+    urlImage: '',
   }
   const [vehicle, setVehicle] = useState(initialState);
   const [vehicles, setVehicles] = useState([]);
   const [showModalVehicle, setShowModalVehicle] = useState(false);
+  const [img, setImg] = useState('');
   const [confirmModalVehicleLoading, setConfirmModalVehicleLoading] = React.useState(false);
   const dom = useRef();
   const intl = useIntl();
   const [formVehicle] = Form.useForm();
-  const UserRepository = Repository.get('user');
+  const VehicleRepository = Repository.get('vehicle');
 
   const columns = [
     {
-      title: 'Names',
-      key: 'name',
+      title: 'Car',
+      key: 'urlImage',
       render: (_, record) => (
         <Space>
-          <span>{ `${record.firstName} ${record.lastName}` }</span>
+          <Avatar src={ record.urlImage } />
         </Space>
       ),
     },
     {
-      title: 'DNI',
-      dataIndex: 'identityNumber',
-      key: 'identityNumber',
+      title: 'Alias Name',
+      dataIndex: 'aliasName',
+      key: 'aliasName',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Mark',
+      dataIndex: 'mark',
+      key: 'mark',
     },
     {
-      title: 'Contact',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'Model',
+      dataIndex: 'model',
+      key: 'model',
+    },
+    {
+      title: 'License Plate',
+      dataIndex: 'licensePlate',
+      key: 'licensePlate',
     },
     {
       title: 'Action',
@@ -80,6 +86,7 @@ const Vehicles = () => {
 
   const prepareNewVehicle = () => {
     setVehicle(initialState);
+    setImg('/img/car/car_example.png');
     setModalAction(intl.formatMessage({id: 'component.Button.new', defaultMessage: 'New'}));
     setShowModalVehicle(true);
   };
@@ -93,7 +100,7 @@ const Vehicles = () => {
 
   const deleteVehicle = async (vehicle) => {
     try {
-      await UserRepository.delete( vehicle._id );
+      await VehicleRepository.delete( vehicle._id );
       fetchVehicles();
     } catch(err) {
       console.error(err);
@@ -106,13 +113,15 @@ const Vehicles = () => {
       .validateFields()
       .then(async function(values) {
         formVehicle.resetFields();
-        const newVehicle = { ...vehicle, ...values };
+        const newVehicle = { ...vehicle, ...values  };
         setVehicle( newVehicle )
         try {
-          if ('_id' in newVehicle) await UserRepository.update( newVehicle );
-          else await UserRepository.store(newVehicle)
+          if ('_id' in newVehicle) await VehicleRepository.update( newVehicle );
+          else await VehicleRepository.store(newVehicle)
+          message.success(`Vehicle ${ ('_id' in newVehicle) ?'updated!' : 'created!'}`);
           fetchVehicles();
         } catch(err) {
+          message.error(`No se pudo procesar!!!`);
           console.error(err);
         }
         setShowModalVehicle(false);
@@ -120,20 +129,57 @@ const Vehicles = () => {
       })
       .catch((info) => {
         setConfirmModalVehicleLoading(false);
-        console.log('validade failed: ', info)
+        console.error('validade failed: ', info)
       })
   }
 
   const fetchVehicles = async () => {
     try {
-      const filter = { role: "vehicle" };
+      const filter = {};
       // if ( roles == 'instructor') filter.userData = { user: idUser };
-      const { data } = await UserRepository.get( filter );
-      setVehicles(data.users);
+      const { data } = await VehicleRepository.get( filter );
+      setVehicles(data);
     } catch (err) {
       console.error('Error get blogs: ', err);
     }
   };
+
+  const onChangeUploadImage = (info) => {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+        const { response } = info.file;
+        setImg(`${response.secure_url}`)
+        setVehicle(vehicle => ({ ...vehicle, urlImage: response.secure_url }))
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+  }
+
+  const getImgURL = () => {
+    if (img) return img;
+    const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
+    return url;
+  };
+
+  const AvatarView = ({ avatar }) => (
+    <>
+      <div className={styles.avatar_title}>Vehicle</div>
+      <div className={styles.avatar}>
+        <img src={avatar} width="100%" alt="avatar" />
+      </div>
+    <Upload name="singleFile" action={`${REACT_APP_API_URL}/api/v1/uploads/file`} onChange={onChangeUploadImage} headers={{ authorization: 'authorization-text' }}>
+        <div className={styles.button_view}>
+          <Button>
+            <UploadOutlined />
+            Change Image
+          </Button>
+        </div>
+      </Upload>
+    </>
+  );
 
   useEffect(() => {
     fetchVehicles();
@@ -170,6 +216,7 @@ const Vehicles = () => {
         title={intl.formatMessage({id: "pages.managment.vehicles.action", defaultMessage: 'Vehicles'}, { action: modalAction })}
         visible={showModalVehicle}
         onOk={saveVehicle}
+        width="720px"
         confirmLoading={confirmModalVehicleLoading}
         onCancel={() => setShowModalVehicle(false)}
       >
@@ -182,62 +229,45 @@ const Vehicles = () => {
           initialValues={vehicle}
           autoComplete="off"
         >
-
           <Row>
-            <Col span={11}>
+            <Col span={8}>
               <Form.Item
-                label="Name"
-                name="firstName"
-                rules={[{ required: true, message: 'Please input your name!' }]}
+                label="License plate"
+                name="licensePlate"
+                rules={[{ required: true, message: 'Please input your license plate' }]}
               >
                 <Input />
               </Form.Item>
+
+              <Form.Item
+                label="Alias name"
+                name="aliasName"
+                rules={[{ required: true, message: 'Please input your alias name' }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Mark"
+                name="mark"
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label="Model"
+                name="model"
+              >
+                <Input />
+              </Form.Item>
+
             </Col>
-            <Col span={12} offset={1} >
-              <Form.Item
-                label="Last Name"
-                name="lastName"
-                rules={[{ required: true, message: 'Please input your lastname' }]}
-              >
-                <Input />
-              </Form.Item>
+            <Col span={15} offset={1} >
+              <div className={styles.right}>
+                <AvatarView key={ img } avatar={getImgURL()} />
+              </div>
             </Col>
           </Row>
-
-          <Row>
-            <Col span={11}>
-              <Form.Item
-                label="DNI"
-                name="identityNumber"
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12} offset={1} >
-              <Form.Item
-                label="Phone"
-                name="phone"
-                rules={[{ required: true, message: 'Please input your phone' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item
-            label="Address"
-            name="address"
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Email"
-            name="email"
-          >
-            <Input />
-          </Form.Item>
-
         </Form>
       </Modal>
     </>
