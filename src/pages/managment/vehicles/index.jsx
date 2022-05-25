@@ -101,9 +101,11 @@ const Vehicles = () => {
   const deleteVehicle = async (vehicle) => {
     try {
       await VehicleRepository.delete( vehicle._id );
+      message.success(`Vehicle deleted!`);
       fetchVehicles();
     } catch(err) {
       console.error(err);
+      message.error(`No se pudo procesar!!!`);
     }
   }
 

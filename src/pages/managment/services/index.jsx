@@ -1,7 +1,7 @@
 import React, {  useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useIntl } from 'umi';
 import { GridContent } from '@ant-design/pro-layout';
-import { Popconfirm, Table, Tag, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
+import { message, InputNumber, Popconfirm, Table, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
 import {
   EditFilled, 
   DeleteFilled,
@@ -12,13 +12,8 @@ import Repository from '@/repositories/factory/RepositoryFactory';
 const Services = () => {
   const [modalAction, setModalAction] = useState('');
   const initialState = {
-    firstName: '',
-    lastName: '',
-    identityNumber: '',
-    phone: '',
-    email: '',
-    role: 'service',
-    haveUser: false
+    name: '',
+    amount: 0.0,
   }
   const [service, setService] = useState(initialState);
   const [services, setServices] = useState([]);
@@ -27,32 +22,18 @@ const Services = () => {
   const dom = useRef();
   const intl = useIntl();
   const [formService] = Form.useForm();
-  const UserRepository = Repository.get('user');
+  const ServiceRepository = Repository.get('service');
 
   const columns = [
     {
-      title: 'Names',
+      title: 'Service name',
+      dataIndex: 'name',
       key: 'name',
-      render: (_, record) => (
-        <Space>
-          <span>{ `${record.firstName} ${record.lastName}` }</span>
-        </Space>
-      ),
     },
     {
-      title: 'DNI',
-      dataIndex: 'identityNumber',
-      key: 'identityNumber',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Contact',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
     },
     {
       title: 'Action',
@@ -93,10 +74,12 @@ const Services = () => {
 
   const deleteService = async (service) => {
     try {
-      await UserRepository.delete( service._id );
+      await ServiceRepository.delete( service._id );
+      message.success(`Service deleted!`);
       fetchServices();
     } catch(err) {
       console.error(err);
+      message.error(`No se pudo procesar!!!`);
     }
   }
 
@@ -109,10 +92,12 @@ const Services = () => {
         const newService = { ...service, ...values };
         setService( newService )
         try {
-          if ('_id' in newService) await UserRepository.update( newService );
-          else await UserRepository.store(newService)
+          if ('_id' in newService) await ServiceRepository.update( newService );
+          else await ServiceRepository.store(newService)
+          message.success(`Service ${ ('_id' in newService) ?'updated!' : 'created!'}`);
           fetchServices();
         } catch(err) {
+          message.error(`No se pudo procesar!!!`);
           console.error(err);
         }
         setShowModalService(false);
@@ -126,10 +111,10 @@ const Services = () => {
 
   const fetchServices = async () => {
     try {
-      const filter = { role: "service" };
-      // if ( roles == 'instructor') filter.userData = { user: idUser };
-      const { data } = await UserRepository.get( filter );
-      setServices(data.users);
+      const filter = { };
+      // if ( roles == 'instructor') filter.userData = { user: idService };
+      const { data } = await ServiceRepository.get( filter );
+      setServices(data);
     } catch (err) {
       console.error('Error get blogs: ', err);
     }
@@ -187,7 +172,7 @@ const Services = () => {
             <Col span={19}>
               <Form.Item
                 label="Service name"
-                name="address"
+                name="name"
                 rules={[{ required: true, message: 'Please input your service name!' }]}
               >
                 <Input />
@@ -199,7 +184,7 @@ const Services = () => {
                 name="amount"
                 rules={[{ required: true, message: 'Please input your amount!' }]}
               >
-                <Input />
+                <InputNumber />
               </Form.Item>
             </Col>
           </Row>

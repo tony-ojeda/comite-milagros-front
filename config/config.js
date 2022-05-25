@@ -84,7 +84,7 @@ export default defineConfig({
       path: '/payment-record',
       name: 'payment-record',
       icon: 'creditCard',
-      path: '/payment-record',
+      component: './paymentRecord',
     },
     {
       name: 'report',
