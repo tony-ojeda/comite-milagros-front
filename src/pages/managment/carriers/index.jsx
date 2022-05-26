@@ -133,7 +133,7 @@ const Carriers = () => {
       const filter = { role: "carrier" };
       // if ( roles == 'instructor') filter.userData = { user: idUser };
       const { data } = await UserRepository.get( filter );
-      setCarriers(data.users);
+      setCarriers(data);
     } catch (err) {
       console.error('Error get blogs: ', err);
     }

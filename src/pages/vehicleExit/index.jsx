@@ -1,7 +1,8 @@
 import React, {  useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useIntl } from 'umi';
 import { GridContent } from '@ant-design/pro-layout';
-import { DatePicker, DatePickerProps, Popconfirm, Table, Select, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
+import { DatePicker, InputNumber, DatePickerProps, Popconfirm, Table, Select, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
+import moment from 'moment';
 import {
   EditFilled, 
   DeleteFilled,
@@ -12,13 +13,12 @@ import Repository from '@/repositories/factory/RepositoryFactory';
 const VehicleExit = () => {
   const [modalAction, setModalAction] = useState('');
   const initialState = {
-    firstName: '',
-    lastName: '',
-    identityNumber: '',
-    phone: '',
-    email: '',
-    role: 'vehicleExit',
-    haveUser: false
+    carrierId: '',
+    vehicleId: '',
+    serviceId: '',
+    serviceName: '',
+    amount: 0,
+    dateExit: moment().format('DD/MM/YYYY HH:mm')
   }
   const [vehicleExit, setVehicleExit] = useState(initialState);
   const [vehicleExits, setVehicleExits] = useState([]);
@@ -27,35 +27,43 @@ const VehicleExit = () => {
   const dom = useRef();
   const intl = useIntl();
   const [formVehicleExit] = Form.useForm();
+  const VehicleExitRepository = Repository.get('vehicleExit');
   const UserRepository = Repository.get('user');
+  const VehicleRepository = Repository.get('vehicle');
+  const ServiceRepository = Repository.get('service');
   const { Option } = Select;
-  const [data, setData] = useState([]);
-  const [value, setValue] = useState()
+  const [carriers, setCarriers] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [services, setServices] = useState([]);
 
   const columns = [
     {
-      title: 'Names',
+      title: 'Carrier',
       key: 'name',
       render: (_, record) => (
         <Space>
-          <span>{ `${record.firstName} ${record.lastName}` }</span>
+          <span>{ `${record.carrier.firstName} ${record.carrier.lastName}` }</span>
         </Space>
       ),
     },
     {
-      title: 'DNI',
-      dataIndex: 'identityNumber',
-      key: 'identityNumber',
+      title: 'Vehicle',
+      key: 'mark',
+      render: (_, record) => (
+        <Space>
+          <span>{ `${record.vehicle.mark}` }</span>
+        </Space>
+      ),
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Service name',
+      dataIndex: 'serviceName',
+      key: 'serviceName',
     },
     {
-      title: 'Contact',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
     },
     {
       title: 'Action',
@@ -83,20 +91,32 @@ const VehicleExit = () => {
 
   const prepareNewVehicleExit = () => {
     setVehicleExit(initialState);
+    if ( services.length == 1 ) {
+      const { _id, name, amount } = services[0];
+      formVehicleExit.setFieldsValue({
+      serviceId: _id,
+      serviceName: name,
+      amount,
+      dateExit: moment()})
+
+    }
+    formVehicleExit.setFieldsValue({dateExit: moment()})
+
     setModalAction(intl.formatMessage({id: 'component.Button.register', defaultMessage: 'Register'}));
     setShowModalVehicleExit(true);
   };
 
   const prepareEditVehicleExit = (vehicleExit) => {
-    setVehicleExit(vehicleExit);
+    const parseVehicleExit = {...vehicleExit, dateExit: moment(vehicleExit.dateExit)};
+    setVehicleExit(parseVehicleExit);
+    formVehicleExit.setFieldsValue(parseVehicleExit)
     setModalAction(intl.formatMessage({id: 'component.Button.edit', defaultMessage: 'Edit'}));
     setShowModalVehicleExit(true);
-    formVehicleExit.setFieldsValue(vehicleExit)
   }
 
   const deleteVehicleExit = async (vehicleExit) => {
     try {
-      await UserRepository.delete( vehicleExit._id );
+      await VehicleExitRepository.delete( vehicleExit._id );
       fetchVehicleExits();
     } catch(err) {
       console.error(err);
@@ -112,8 +132,8 @@ const VehicleExit = () => {
         const newVehicleExit = { ...vehicleExit, ...values };
         setVehicleExit( newVehicleExit )
         try {
-          if ('_id' in newVehicleExit) await UserRepository.update( newVehicleExit );
-          else await UserRepository.store(newVehicleExit)
+          if ('_id' in newVehicleExit) await VehicleExitRepository.update( newVehicleExit );
+          else await VehicleExitRepository.store(newVehicleExit)
           fetchVehicleExits();
         } catch(err) {
           console.error(err);
@@ -127,17 +147,6 @@ const VehicleExit = () => {
       })
   }
 
-  const fetchVehicleExits = async () => {
-    try {
-      const filter = { role: "vehicleExit" };
-      // if ( roles == 'instructor') filter.userData = { user: idUser };
-      const { data } = await UserRepository.get( filter );
-      setVehicleExits(data.users);
-    } catch (err) {
-      console.error('Error get blogs: ', err);
-    }
-  };
-
   const handleSearch = (newValue) => {
     if (newValue) {
       fetch(newValue, setData);
@@ -147,20 +156,75 @@ const VehicleExit = () => {
   };
 
   const handleChange = (newValue) => {
-    setValue(newValue);
+    console.log(newValue)
+  };
+
+  const handleSelectServices = (_id) => {
+    const service = services.find(item => item._id == _id)
+    if (service) {
+      formVehicleExit.setFieldsValue({amount: service.amount})
+      formVehicleExit.setFieldsValue({serviceName: service.name})
+    } else {
+      setVehicleExit(item => ({...item, serviceName: '', amount: 0}));
+    }
   };
 
   const onChange = (date, dateString) => {
     console.log(date, dateString);
   };
 
-  const options = data.map((d) => <Option key={d.value}>{d.text}</Option>);
-
   useEffect(() => {
     fetchVehicleExits();
+    fetchCarriers();
+    fetchVehicles();
+    fetchServices();
     // if( roles == 'user') setIsEdit(false)
     // else setIsEdit(true)
   }, []);
+
+  const fetchVehicleExits = async () => {
+    try {
+      const filter = {};
+      // if ( roles == 'instructor') filter.userData = { user: idUser };
+      const { data } = await VehicleExitRepository.get( filter );
+      setVehicleExits(data);
+    } catch (err) {
+      console.error('Error get blogs: ', err);
+    }
+  };
+
+  const fetchCarriers = async () => {
+    try {
+      const filter = { role: "carrier" };
+      const { data } = await UserRepository.get( filter );
+      setCarriers(data);
+    } catch (err) {
+      console.error('Error get blogs: ', err);
+    }
+  };
+
+  const fetchServices = async () => {
+    try {
+      const filter = { };
+      // if ( roles == 'instructor') filter.userData = { user: idService };
+      const { data } = await ServiceRepository.get( filter );
+      setServices(data);
+    } catch (err) {
+      console.error('Error get blogs: ', err);
+    }
+  };
+
+  const fetchVehicles = async () => {
+    try {
+      const filter = {};
+      // if ( roles == 'instructor') filter.userData = { user: idUser };
+      const { data } = await VehicleRepository.get( filter );
+      setVehicles(data);
+    } catch (err) {
+      console.error('Error get blogs: ', err);
+    }
+  };
+
   return (
     <>
       <GridContent>
@@ -209,55 +273,58 @@ const VehicleExit = () => {
             rules={[{ required: true, message: 'Please select carrier!' }]}
           >
             <Select
-              showSearch
-              value={value}
+              showSearch={false}
               placeholder={'Select carrier'}
               defaultActiveFirstOption={false}
-              filterOption={(input, option) => option.children.includes(input)}
-              onSearch={handleSearch}
               onChange={handleChange}
               notFoundContent={null}
             >
-              {options}
+              {
+                carriers.map((carrier) => <Option value={carrier._id} key={carrier._id}>{carrier.firstName} {carrier.lastName}</Option>)
+              }
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Vehicles"
-            name="carrierId"
+            name="vehicleId"
             rules={[{ required: true, message: 'Please select vehicle!' }]}
           >
             <Select
-              showSearch
-              value={value}
+              showSearch={false}
               placeholder={'Select vehiclec'}
               defaultActiveFirstOption={false}
-              filterOption={(input, option) => option.children.includes(input)}
-              onSearch={handleSearch}
               onChange={handleChange}
               notFoundContent={null}
             >
-              {options}
+              {
+                vehicles.map((vehicle) => <Option value={vehicle._id} key={vehicle._id}>{vehicle.mark} - alias: { vehicle.aliasName }</Option>)
+              }
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Services"
-            name="carrierId"
+            name="serviceId"
             rules={[{ required: true, message: 'Please select service!' }]}
           >
             <Select
-              showSearch
-              value={value}
+              showSearch={false}
               placeholder={'Select service'}
-              defaultActiveFirstOption={false}
-              filterOption={(input, option) => option.children.includes(input)}
-              onSearch={handleSearch}
-              onChange={handleChange}
-              notFoundContent={null}
+              onChange={handleSelectServices}
             >
-              {options}
+              {
+                services.map((service) => <Option value={service._id} key={service._id}>{service.name}</Option>)
+              }
             </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Service Description"
+            name="serviceName"
+            rules={[{ required: true, message: 'Please input your service description!' }]}
+          >
+            <Input />
           </Form.Item>
 
           <Row>
@@ -267,7 +334,7 @@ const VehicleExit = () => {
                 name="amount"
                 rules={[{ required: true, message: 'Please input your amount!' }]}
               >
-                <Input />
+                <InputNumber />
               </Form.Item>
             </Col>
             <Col span={12} offset={1} >
@@ -276,7 +343,7 @@ const VehicleExit = () => {
                 name="dateExit"
                 rules={[{ required: true, message: 'Please input your date exit!' }]}
               >
-                <DatePicker style={{width: '100%'}} onChange={onChange} />
+                <DatePicker showTime={{ format: 'HH:mm' }} format={'DD/MM/YYYY HH:mm'} style={{width: '100%'}} onChange={onChange} />
               </Form.Item>
             </Col>
           </Row>
