@@ -77,4 +77,6 @@ export default {
   'pages.managment.services.action': '{action} Servicio',
   'pages.managment.vehicleExit.title': 'Lista Salida de Vehiculos',
   'pages.managment.vehicleExit.action': '{action} salida de vehiculo',
+  'pages.paymentRecord.title': 'Registro de Pagos',
+  'pages.paymentRecord.action': '{action} registro de pago',
 };

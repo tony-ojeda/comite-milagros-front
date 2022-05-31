@@ -75,6 +75,8 @@ export default {
   'pages.managment.vehicles.action': '{action} Vehicle',
   'pages.managment.services.title': 'List of services',
   'pages.managment.services.action': '{action} Service',
-  'pages.vehicleExit.title': 'List of vehicle exit',
+  'pages.vehicleExit.title': 'List of vehicle exits',
   'pages.vehicleExit.action': '{action} vehicle exit',
+  'pages.paymentRecord.title': 'List of payment records',
+  'pages.paymentRecord.action': '{action} payment record',
 };

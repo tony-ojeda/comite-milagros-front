@@ -66,13 +66,13 @@ export default defineConfig({
         },
       ],
     },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      icon: 'dashboard',
-      path: '/dashboard/analysis',
-      component: './dashboard/analysis',
-    },
+    // {
+    //   path: '/dashboard',
+    //   name: 'dashboard',
+    //   icon: 'dashboard',
+    //   path: '/dashboard/analysis',
+    //   component: './dashboard/analysis',
+    // },
     {
       path: '/go-out',
       name: 'go-out',

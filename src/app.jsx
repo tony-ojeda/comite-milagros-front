@@ -70,7 +70,7 @@ export const layout = ({ initialState, setInitialState }) => {
     //   : [],
     menuHeaderRender: undefined,
     childrenRender: (children, props) => {
-      // if (initialState?.loading) return <PageLoading />;
+      if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}

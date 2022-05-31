@@ -7,4 +7,5 @@ export default {
   'component.Button.register': 'Register',
   'component.Button.edit': 'Edit',
   'component.Button.delete': 'Delete',
+  'component.Button.search': 'Search',
 };

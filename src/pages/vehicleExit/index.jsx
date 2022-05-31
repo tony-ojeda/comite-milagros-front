@@ -24,6 +24,7 @@ const VehicleExit = () => {
   const [vehicleExits, setVehicleExits] = useState([]);
   const [showModalVehicleExit, setShowModalVehicleExit] = useState(false);
   const [confirmModalVehicleExitLoading, setConfirmModalVehicleExitLoading] = React.useState(false);
+  const [tableVehicleExitLoading, setTableVehicleExitLoading] = React.useState(true);
   const dom = useRef();
   const intl = useIntl();
   const [formVehicleExit] = Form.useForm();
@@ -99,8 +100,7 @@ const VehicleExit = () => {
       amount,
       dateExit: moment()})
 
-    }
-    formVehicleExit.setFieldsValue({dateExit: moment()})
+    } else formVehicleExit.setFieldsValue({dateExit: moment()});
 
     setModalAction(intl.formatMessage({id: 'component.Button.register', defaultMessage: 'Register'}));
     setShowModalVehicleExit(true);
@@ -183,6 +183,7 @@ const VehicleExit = () => {
   }, []);
 
   const fetchVehicleExits = async () => {
+    setTableVehicleExitLoading(true);
     try {
       const filter = {};
       // if ( roles == 'instructor') filter.userData = { user: idUser };
@@ -191,6 +192,7 @@ const VehicleExit = () => {
     } catch (err) {
       console.error('Error get blogs: ', err);
     }
+    setTableVehicleExitLoading(false);
   };
 
   const fetchCarriers = async () => {
@@ -246,7 +248,7 @@ const VehicleExit = () => {
               </Button>
             </div>
             <Divider />
-            <Table size="small" pagination={{position: ['bottomCenter']}} columns={columns} dataSource={vehicleExits} rowKey={(vehicleExit) => vehicleExit._id} />
+            <Table size="small" loading={tableVehicleExitLoading} pagination={{position: ['bottomCenter']}} columns={columns} dataSource={vehicleExits} rowKey={(vehicleExit) => vehicleExit._id} />
           </div>
         </div>
       </GridContent>
