@@ -61,6 +61,7 @@ const Services = () => {
 
   const prepareNewService = () => {
     setService(initialState);
+    formService.setFieldsValue(initialState)
     setModalAction(intl.formatMessage({id: 'component.Button.new', defaultMessage: 'New'}));
     setShowModalService(true);
   };

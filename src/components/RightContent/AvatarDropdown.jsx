@@ -5,10 +5,8 @@ import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import { outLogin } from '@/services/ant-design-pro/api';
 
 const loginOut = async () => {
-  await outLogin();
   const { query = {}, search, pathname } = history.location;
   const { redirect } = query; // Note: There may be security issues, please note
 
@@ -30,6 +28,7 @@ const AvatarDropdown = ({ menu }) => {
 
       if (key === 'logout') {
         setInitialState((s) => ({ ...s, currentUser: undefined }));
+        localStorage.setItem('user_token', '')
         loginOut();
         return;
       }

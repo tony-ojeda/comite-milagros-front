@@ -41,6 +41,11 @@ const Login = () => {
     if (userInfo) {
       await setInitialState((s) => ({ ...s, currentUser: userInfo }));
     }
+
+    if (userInfo.role == 'admin') history.push('/got-out')
+    if (userInfo.role == 'secretary') history.push('/got-out')
+    if (userInfo.role == 'carrier') history.push('/report/debts')
+
   };
 
   const handleSubmit = async (values) => {
@@ -57,10 +62,12 @@ const Login = () => {
         localStorage.setItem('user_token', token)
         await fetchUserInfo();
 
-        if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query;
-        history.push(redirect || '/');
+
+
+        // if (!history) return;
+        // const { query } = history.location;
+        // const { redirect } = query;
+        // history.push(redirect || '/');
         return;
       }
       setUserLoginState(msg);

@@ -92,6 +92,7 @@ const VehicleExit = () => {
 
   const prepareNewVehicleExit = () => {
     setVehicleExit(initialState);
+    formVehicleExit.setFieldsValue(initialState)
     if ( services.length == 1 ) {
       const { _id, name, amount } = services[0];
       formVehicleExit.setFieldsValue({
@@ -128,7 +129,6 @@ const VehicleExit = () => {
     formVehicleExit
       .validateFields()
       .then(async function(values) {
-        formVehicleExit.resetFields();
         const newVehicleExit = { ...vehicleExit, ...values };
         setVehicleExit( newVehicleExit )
         try {
@@ -140,6 +140,7 @@ const VehicleExit = () => {
         }
         setShowModalVehicleExit(false);
         setConfirmModalVehicleExitLoading(false);
+        formVehicleExit.resetFields();
       })
       .catch((info) => {
         setConfirmModalVehicleExitLoading(false);
@@ -183,6 +184,7 @@ const VehicleExit = () => {
   }, []);
 
   const fetchVehicleExits = async () => {
+
     setTableVehicleExitLoading(true);
     try {
       const filter = {};

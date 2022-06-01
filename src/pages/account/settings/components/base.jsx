@@ -8,7 +8,7 @@ import ProForm, {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { useRequest } from 'umi';
+import { useRequest, useModel } from 'umi';
 import Repository from '@/repositories/factory/RepositoryFactory';
 import { queryProvince, queryCity } from '../service';
 import styles from './BaseView.less';
@@ -26,6 +26,7 @@ const validatorPhone = (rule, value, callback) => {
 };
 
 const BaseView = () => {
+  const { initialState, setInitialState } = useModel('@@initialState');
   const UserRepository = Repository.get('user');
   const [img, setImg] = useState('');
   const { data: currentUser, loading } = useRequest(() => {
@@ -49,6 +50,12 @@ const BaseView = () => {
     const payload = { ...currentUser, ...data }
     try {
       await UserRepository.update(payload)
+
+      const userInfo = await initialState?.fetchUserInfo?.();
+      if (userInfo) {
+        await setInitialState((s) => ({ ...s, currentUser: userInfo }));
+      }
+
       message.success('Update basic information successfully');
     } catch(err) {
       message.error('Error Update basic information successfully');

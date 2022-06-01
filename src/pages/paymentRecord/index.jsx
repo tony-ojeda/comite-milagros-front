@@ -1,5 +1,5 @@
 import React, {  useEffect, useState, useRef, useLayoutEffect } from 'react';
-import { useIntl } from 'umi';
+import { useIntl, useModel } from 'umi';
 import { GridContent } from '@ant-design/pro-layout';
 import { message, DatePicker, InputNumber, DatePickerProps, Popconfirm, Table, Select, Space, Divider, Modal, Form, Input, Button, Row, Col } from 'antd';
 import moment from 'moment';
@@ -37,6 +37,8 @@ const Transaction = () => {
   const { Option } = Select;
   const [data, setData] = useState([]);
   const [value, setValue] = useState()
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState;
   let timeout;
   let currentValue;
 
@@ -143,28 +145,58 @@ const Transaction = () => {
   ];
   const columns = [
     {
-      title: 'Names',
+      title: 'Carrier Name',
       key: 'name',
       render: (_, record) => (
         <Space>
-          <span>{ `${record.firstName} ${record.lastName}` }</span>
+          <span>{ `${record.carrier.firstName} ${record.carrier.lastName}` }</span>
         </Space>
       ),
     },
     {
       title: 'DNI',
-      dataIndex: 'identityNumber',
       key: 'identityNumber',
+      render: (_, record) => (
+        <Space>
+          <span>{ `${record.carrier.identityNumber}` }</span>
+        </Space>
+      ),
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
+      title: 'phone',
       key: 'address',
+      render: (_, record) => (
+        <Space>
+          <span>{ `${record.carrier.phone}` }</span>
+        </Space>
+      ),
     },
     {
-      title: 'Contact',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'Payment Date',
+      key: 'paymentDate',
+      render: (_, record) => (
+        <Space>
+          <span>{ `${moment(record.dateAt).format('DD/MM/YYYY HH:mm')}` }</span>
+        </Space>
+      ),
+    },
+    {
+      title: 'Total',
+      key: 'total',
+      render: (_, record) => (
+        <Space>
+          <span>{ `S/${ parseFloat(record.total).toFixed(2) }` }</span>
+        </Space>
+      ),
+    },
+    {
+      title: 'User',
+      key: 'user',
+      render: (_, record) => (
+        <Space>
+          <span>{ `${record.user ? record.user.name : '-'}` }</span>
+        </Space>
+      ),
     },
     {
       title: 'Action',
@@ -192,7 +224,7 @@ const Transaction = () => {
 
   const prepareNewTransaction = () => {
     formTransaction.resetFields();
-    setTransaction(initialStateTransaction);
+    setTransaction(item => ({ ...initialStateTransaction, userId: currentUser._id }));
     setTransactionDetails([]);
     setVehicleExitsByCarrier([]);
     setValue('');
@@ -251,9 +283,9 @@ const Transaction = () => {
 
   const fetchTransactions = async () => {
     try {
-      const filter = { role: "transaction" };
+      const filter = {};
       // if ( roles == 'instructor') filter.userData = { user: idUser };
-      const { data } = await UserRepository.get( filter );
+      const { data } = await TransactionRepository.get( filter );
       setTransactions(data);
     } catch (err) {
       console.error('Error get blogs: ', err);
@@ -281,18 +313,14 @@ const Transaction = () => {
     timeout = null;
   }
   currentValue = value;
-    console.log('valie', value)
-    console.log('type', type)
   	async function fake() {
     // Observación, la busqueda del stand se hace por id, puede funcionar mejor por dni
       const filter = { carrierId: currentValue };
       const {data} = await VehicleExitRepository.get( filter );
       if (currentValue === value) {
         const result = data;
-        console.log('data data debts', data)
         const tmp_data = [];
         setVehicleExitsByCarrier(result);
-        console.log('exits', vehicleExitsByCarrier)
         result.forEach(item => {
           tmp_data.push({value: item.id+' '+item.stand_id,text: `${item.market_code?item.market_code+' | ':''} ${item.sector_name?item.sector_name+' | ':''} ${item.stand_code?item.stand_code+' | ':''} ${item.stand_name?item.stand_name+' | ':''} ${item.name} ${item.lastname?item.lastname:''}`,photo:item.photo,stand_id:item.stand_id});
         });

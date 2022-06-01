@@ -21,6 +21,7 @@ const clearCache = () => {
 if (pwa) {
   // Notify user if offline now
   window.addEventListener('sw.offline', () => {
+    console.log('global sw.offline')
     message.warning(
       useIntl().formatMessage({
         id: 'app.pwa.offline',
@@ -29,6 +30,7 @@ if (pwa) {
   }); // Pop up a prompt on the page asking the user if they want to use the latest version
 
   window.addEventListener('sw.updated', (event) => {
+    console.log('global sw.updated')
     const e = event;
 
     const reloadSW = async () => {
@@ -90,6 +92,7 @@ if (pwa) {
     });
   });
 } else if ('serviceWorker' in navigator && isHttps) {
+  console.log('global serviceWorker')
   // unregister service worker
   const { serviceWorker } = navigator;
 

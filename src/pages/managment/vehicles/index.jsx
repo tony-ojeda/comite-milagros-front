@@ -86,6 +86,7 @@ const Vehicles = () => {
 
   const prepareNewVehicle = () => {
     setVehicle(initialState);
+    formVehicle.setFieldsValue(initialState)
     setImg('/img/car/car_example.png');
     setModalAction(intl.formatMessage({id: 'component.Button.new', defaultMessage: 'New'}));
     setShowModalVehicle(true);
@@ -93,6 +94,7 @@ const Vehicles = () => {
 
   const prepareEditVehicle = (vehicle) => {
     setVehicle(vehicle);
+    setImg(vehicle.urlImage);
     setModalAction(intl.formatMessage({id: 'component.Button.edit', defaultMessage: 'Edit'}));
     setShowModalVehicle(true);
     formVehicle.setFieldsValue(vehicle)

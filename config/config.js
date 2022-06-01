@@ -79,12 +79,14 @@ export default defineConfig({
       icon: 'car',
       path: '/got-out',
       component: './vehicleExit',
+      access: 'canAdminAndSecretary',
     },
     {
       path: '/payment-record',
       name: 'payment-record',
       icon: 'creditCard',
       component: './paymentRecord',
+      access: 'canAdminAndSecretary',
     },
     {
       name: 'report',
@@ -98,6 +100,7 @@ export default defineConfig({
         {
           name: 'incomes',
           path: '/report/incomes',
+          access: 'canAdmin',
         },
       ]
     },
@@ -105,6 +108,7 @@ export default defineConfig({
       name: 'managment',
       icon: 'setting',
       path: '/managment',
+      access: 'canAdminAndSecretary',
       routes: [
         {
           name: 'carriers',
@@ -144,7 +148,8 @@ export default defineConfig({
     },
     {
       path: '/',
-      redirect: '/dashboard/analysis',
+      // redirect: '/dashboard/analysis',
+      redirect: '/got-out',
     },
     {
       component: '404',

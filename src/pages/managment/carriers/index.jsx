@@ -16,6 +16,7 @@ const Carriers = () => {
     lastName: '',
     identityNumber: '',
     phone: '',
+    address: '',
     email: '',
     role: 'carrier',
     haveUser: false
@@ -80,6 +81,7 @@ const Carriers = () => {
 
   const prepareNewCarrier = () => {
     setCarrier(initialState);
+    formCarrier.setFieldsValue(initialState);
     setModalAction(intl.formatMessage({id: 'component.Button.new', defaultMessage: 'New'}));
     setShowModalCarrier(true);
   };
