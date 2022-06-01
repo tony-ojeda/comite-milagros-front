@@ -29,13 +29,13 @@ Reportes
 ### VISTAS
 
 ### LOGIN
-![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/login.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/login.png)
 
 ### PRINCIPAL
-![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/vehicle.png)
-![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/vehicleExit.png)
-![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/newVehicleExit.png)
-![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/registerPayment.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/vehicle.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/vehicleExit.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/newVehicleExit.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/registerPayment.png)
 
 ### INSTALAR
 `npm install`
