@@ -62,6 +62,15 @@ const VehicleExit = () => {
       key: 'serviceName',
     },
     {
+      title: 'Date Exit',
+      key: 'dateExit',
+      render: (_, record) => (
+        <Space>
+          <span>{ `${moment(record.dateExit).format('DD/MM/YYYY HH:mm')}` }</span>
+        </Space>
+      ),
+    },
+    {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',

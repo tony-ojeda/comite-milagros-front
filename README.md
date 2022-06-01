@@ -1,57 +1,50 @@
-# Ant Design Pro
+### Comite Milagros
+:octocat: :ghost: :jack_o_lantern:
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+#### Descripción
+Está aplicación busca controlar las salidas de vehiculos de una pequeña empresa de transportes.
+Es de interes conocer en que fecha se registro la salida del transportista, y el monto que le corresponde pagar.
+Se debe de gestionar el pago por dichas salidas.
+Cuenta con 3 roles (Admin, Secretaria, transportista)
+
+
+#### Características
+Registro de transportistas
+Registro de vehiculos
+Registro de la ruta de salida del vehiculo
+Registro de salida del transaportista
+Registro de pago del transaportista
+Reportes
+
+#### Tecnologias
+- React
+- React Router
+- Ant Design
+- UmiJS
+- axiosJS
+- CSS
+- LESS
+- JS
+
+### VISTAS
+
+### LOGIN
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/login.png)
+
+### PRINCIPAL
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/vehicle.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/vehicleExit.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/newVehicleExit.png)
+![](https://github.com/tony-ojeda/redux-exercise/blob/main/public/github/registerPayment.png)
+
+### INSTALAR
+`npm install`
+
+`npm run dev`
+
 
 ## Environment Prepare
-
-Install `node_modules`:
-
-```bash
-npm install
-```
-
-or
-
-```bash
-yarn
-```
-
-## Provided Scripts
-
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
-npm run build
-```
-
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+in config/config.js modificar la url del backend:
+  define: {
+    REACT_APP_API_URL: 'http://localhost:3001',
+  },
